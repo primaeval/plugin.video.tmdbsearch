@@ -11,7 +11,7 @@
 	<setting type="sep"/>
 	<setting label="Certificate" type="select" id="certificates" default="Any" values="Any|US,NR|US,G|US,PG|US,PG-13|US,R|US,NC-17|GB,U|GB,PG|GB,12A|GB,12|GB,15|GB,18|GB,R18|AU,E|AU,G|AU,PG|AU,M|AU,MA15+|AU,R18+|AU,X18+|AU,RC|NZ,G|NZ,PG|NZ,M|NZ,13|NZ,15|NZ,16|NZ,18|NZ,R|CA,G|CA,PG|CA,14A|CA,18A|CA,R|CA,A|FR,U|FR,10|FR,12|FR,16|FR,18|DE,0|DE,6|DE,12|DE,16|DE,18|IN,U|IN,UA|IN,A"/>
 	<setting label="Certificate or Lower" type="bool" id="certificationlte" default="true"/>
-	<setting label="Include Adult" type="bool" id="include_adult" default="false"/>
+
 </category>
 
 <category label="Popularity">
@@ -27,13 +27,16 @@
 </category>
 
 <category label="Details">
-	<setting label="Company" type="select" id="companies" default= "Any" values="Any|Fox|Columbia|Dreamworks|MGM|Paramount|Universal|Disney|Warner"/>
+	<setting label="Company ID" type="number" id="companies" default=""/>
+	<setting label="Find Company ID" type="action" action="XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=find_company)"/>
 	<setting type="sep"/>
 	<setting label="Keywords" type="text" id="keywords" default=""/>
-	<setting label="Find Keywords" type="action" action="XBMC.RunPlugin(plugin://plugin.video.imdbsearch/?action=find_keywords)"/>
+	<setting label="Find Keywords" type="action" action="XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=find_keywords)"/>
 	<setting type="sep"/>
 	<setting label="Crew ID" type="text" id="crew" default=""/>
-	<setting label="Find Crew ID" type="action" action="XBMC.RunPlugin(plugin://plugin.video.imdbsearch/?action=find_crew)"/>
+	<setting label="Find Crew ID" type="action" action="XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=find_crew)"/>
+	<setting type="sep"/>
+	<setting label="Include Adult" type="bool" id="include_adult" default="false"/>
 </category>
 
 <category label="Display">

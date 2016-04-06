@@ -804,9 +804,9 @@ def get_url(category,page):
     ("user_rating", "%.1f,%.1f" % (float(__settings__.getSetting( "user_rating_low" )),float(__settings__.getSetting( "user_rating_high" )))),
     ("num_votes", "%s,%s" % (__settings__.getSetting( "num_votes_low" ),__settings__.getSetting( "num_votes_high" ))),
     ("genres", "%s,%s" % (get_genre(category),get_genre(__settings__.getSetting( "genres" )))),   
-    ("groups", "%s" % (get_group(__settings__.getSetting( "groups" )))),  
-    ("companies", get_company(__settings__.getSetting( "companies" ))),
-    ("boxoffice_gross_us", "%s,%s" % (__settings__.getSetting( "boxoffice_gross_us_low" ),__settings__.getSetting( "boxoffice_gross_us_high" ))),
+    #("groups", "%s" % (get_group(__settings__.getSetting( "groups" )))),  
+    ("companies", __settings__.getSetting( "companies" )),
+    #("boxoffice_gross_us", "%s,%s" % (__settings__.getSetting( "boxoffice_gross_us_low" ),__settings__.getSetting( "boxoffice_gross_us_high" ))),
     ("sort", get_sort(__settings__.getSetting( "sort" ))),
     ("certificates", __settings__.getSetting( "certificates" )),
     ("certificationlte", __settings__.getSetting( "certificationlte" )),
@@ -814,15 +814,15 @@ def get_url(category,page):
     ("include_video", __settings__.getSetting( "include_video" )),
     ("countries", get_countries(__settings__.getSetting( "countries" ))),
     ("languages", get_languages(__settings__.getSetting( "languages" ))),
-    ("moviemeter", "%s,%s" % (__settings__.getSetting( "moviemeter_low" ),__settings__.getSetting( "moviemeter_high" ))),
-    ("production_status", get_production_status(__settings__.getSetting( "production_status" ))),
-    ("runtime", "%s,%s" % (__settings__.getSetting( "runtime_low" ),__settings__.getSetting( "runtime_high" ))),
+    #("moviemeter", "%s,%s" % (__settings__.getSetting( "moviemeter_low" ),__settings__.getSetting( "moviemeter_high" ))),
+    #("production_status", get_production_status(__settings__.getSetting( "production_status" ))),
+    #("runtime", "%s,%s" % (__settings__.getSetting( "runtime_low" ),__settings__.getSetting( "runtime_high" ))),
     ("sort", get_sort(__settings__.getSetting( "sort" ))),
-    ("colors", get_color(__settings__.getSetting( "colors" ))),
+    #("colors", get_color(__settings__.getSetting( "colors" ))),
     ("role", __settings__.getSetting( "crew" )),
     ("plot", __settings__.getSetting( "plot" )),
     ("keywords", __settings__.getSetting( "keywords" )),
-    ("locations", __settings__.getSetting( "locations" )),
+    #("locations", __settings__.getSetting( "locations" )),
     ("page", str(page)),
     ]
     #server = get_server(__settings__.getSetting( "server" ))
@@ -872,10 +872,16 @@ def get_videos(url):
             kwargs['certification'] = certificate[1]
     kwargs['include_adult'] = params['include_adult']
     kwargs['include_video'] = params['include_video']
+
+    if 'languages' in params:
+        kwargs['language'] = params['languages']
+    
+    if 'companies' in params:
+        kwargs['with_companies'] = params['companies']
         
     kwargs['page'] = params['page']
-    LANG = 'en'
-    result = tmdbsimple.Discover().movie(language=LANG, **kwargs
+    #LANG = 'en'
+    result = tmdbsimple.Discover().movie(**kwargs
     #{
     #'page': page, 
     #'sort_by': sort,
@@ -1382,10 +1388,31 @@ def find_keywords(keyword=''):
     else:
         dialog.notification('IMDB:','Nothing Found!')
         
+def find_company(keyword=''):
+    dialog = xbmcgui.Dialog()
+    if not keyword:
+        keyword = dialog.input('Search for company', type=xbmcgui.INPUT_ALPHANUM)
+    dialog.notification('TMDb:','Finding company matches...')
+    if not keyword:
+        dialog.notification('TMDb:','No input!')
+        return
+    kwargs = {'query': urllib.quote_plus(keyword)}
+    result = tmdbsimple.Search().company(**kwargs)
+    companies = result['results']
+    companies = [[i['name'],i['id']] for i in companies]
+    names = [i[0] for i in companies]
+    if companies:
+        index = dialog.select('Pick company',names)
+        id = companies[index][1]
+        __settings__.setSetting('companies',str(id))
+    else:
+        dialog.notification('TMDb:','Nothing Found!')
 
 def router(paramstring):
     params = dict(parse_qsl(paramstring))
     if params:
+        if params['action'] == 'find_company':
+            find_company()
         if params['action'] == 'find_keywords':
             find_keywords()
         if params['action'] == 'find_crew':
