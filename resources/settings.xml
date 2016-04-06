@@ -1,0 +1,78 @@
+<settings>
+
+<category label="Basic">
+	<setting label="Title" type="text" id="title" default=""/>
+	<setting type="sep"/>
+	<setting label="Type" type="select" id="title_type" default="Feature" values="Feature|TV Movie|TV Series|TV Episode|TV Special|Mini Series|Documentary|Game|Short|Video"/>
+	<setting type="sep"/>
+	<setting label="Year Start" type="slider" id="release_date_start" subsetting="true" default="2015" range="1900,1,2020" option="int" />
+	<setting label="Year End" type="slider" id="release_date_end" subsetting="true" default="2016" range="1900,1,2020" option="int" />
+	<setting type="sep"/>
+	<setting label="Extra Genre" type="select" id="genres" default="None" values="None|Action|Adventure|Animation|Biography|Comedy|Crime|Documentary|Drama|Family|Fantasy|Film Noir|Game show|History|Horror|Music|Musical|Mystery|News|Reality TV|Romance|Sci-Fi|Sport|Talk Show|Thriller|War|Western"/>
+	<setting type="sep"/>
+	<setting label="Certificate" type="select" id="certificates" default="Any" values="Any|US:G|US:PG|US:PG_13|US:R|US:NC_17|GB:U|GB:PG|GB:12|GB:12A|GB:15|GB:18|GB:R18"/>
+
+</category>
+
+<category label="Popularity">
+	<setting label="Awards" type="select" id="groups" default="Any" values="Any|Top 100|Top 250|Top 1000|Now Playing Us|Oscar Winners|Oscar Best Picture Winners|Oscar Best Director Winners|Oscar Nominees|Emmy Winners|Emmy Nominees|Golden Globe Winners|Golden Globe Nominees|Razzie Winners|Razzie Nominees|National Film Registry|Bottom 100|Bottom 250|Bottom 1000"/>
+	<setting type="sep"/>
+	<setting label="User Rating Low" type="slider" id="user_rating_low" subsetting="true" default="6.0" range="0.0,0.1,10.0" option="float" />
+	<setting label="User Rating High" type="slider" id="user_rating_high" subsetting="true" default="10.0" range="0.0,0.1,10.0" option="float" />
+	<setting type="sep"/>
+	<setting label="Votes Minimum" type="number" id="num_votes_low" default="100"/>
+	<setting label="Votes Maximum" type="number" id="num_votes_high" default=""/>
+	<setting type="sep"/>
+	<setting label="Popularity Minimum" type="number" id="moviemeter_low" default=""/>
+	<setting label="Popularity Maximum" type="number" id="moviemeter_high" default=""/>
+	<setting type="sep"/>
+	<setting label="Box Office Gross US Minimum" type="number" id="boxoffice_gross_us_low" default=""/>
+	<setting label="Box Office Gross US Maximum" type="number" id="boxoffice_gross_us_high" default=""/>
+</category>
+
+<category label="Country">
+	<setting label="IMDb Server" type="select" id="server" default="Normal" values="Original Title|Normal"/>
+	<setting type="sep"/>
+	<setting label="Country of Origin" type="select" id="countries" default="Any" values="Any|Argentina|Australia|Austria|Belgium|Brazil|Bulgaria|Canada|China|Colombia|Costa Rica|Czech Republic|Denmark|Finland|France|Germany|Greece|Hong Kong|Hungary|Iceland|India|Iran|Ireland|Italy|Japan|Malaysia|Mexico|Netherlands|New Zealand|Pakistan|Poland|Portugal|Romania|Russia|Singapore|South Africa|Spain|Sweden|Switzerland|Thailand|United Kingdom|United States|Afghanistan|&#xC5;land Islands|Albania|Algeria|American Samoa|Andorra|Angola|Anguilla|Antarctica|Antigua and Barbuda|Armenia|Aruba|Azerbaijan|Bahamas|Bahrain|Bangladesh|Barbados|Belarus|Belize|Benin|Bermuda|Bhutan|Bolivia|Bonaire, Sint Eustatius and Saba|Bosnia and Herzegovina|Botswana|Bouvet Island|British Indian Ocean Territory|British Virgin Islands|Brunei Darussalam|Burkina Faso|Burma|Burundi|Cambodia|Cameroon|Cape Verde|Cayman Islands|Central African Republic|Chad|Chile|Christmas Island|Cocos (Keeling) Islands|Comoros|Congo|Cook Islands|C&#xF4;te d&#x27;Ivoire|Croatia|Cuba|Cyprus|Czechoslovakia|Democratic Republic of the Congo|Djibouti|Dominica|Dominican Republic|East Germany|Ecuador|Egypt|El Salvador|Equatorial Guinea|Eritrea|Estonia|Ethiopia|Falkland Islands|Faroe Islands|Federal Republic of Yugoslavia|Federated States of Micronesia|Fiji|French Guiana|French Polynesia|French Southern Territories|Gabon|Gambia|Georgia|Ghana|Gibraltar|Greenland|Grenada|Guadeloupe|Guam|Guatemala|Guernsey|Guinea|Guinea-Bissau|Guyana|Haiti|Heard Island and McDonald Islands|Holy See (Vatican City State)|Honduras|Indonesia|Iraq|Isle of Man|Israel|Jamaica|Jersey|Jordan|Kazakhstan|Kenya|Kiribati|Korea|Kosovo|Kuwait|Kyrgyzstan|Laos|Latvia|Lebanon|Lesotho|Liberia|Libya|Liechtenstein|Lithuania|Luxembourg|Macao|Madagascar|Malawi|Maldives|Mali|Malta|Marshall Islands|Martinique|Mauritania|Mauritius|Mayotte|Moldova|Monaco|Mongolia|Montenegro|Montserrat|Morocco|Mozambique|Myanmar|Namibia|Nauru|Nepal|Netherlands Antilles|New Caledonia|Nicaragua|Niger|Nigeria|Niue|Norfolk Island|North Korea|North Vietnam|Northern Mariana Islands|Norway|Oman|Palau|Palestine|Palestinian Territory|Panama|Papua New Guinea|Paraguay|Peru|Philippines|Pitcairn|Puerto Rico|Qatar|Republic of Macedonia|R&#xE9;union|Rwanda|Saint Barth&#xE9;lemy|Saint Helena|Saint Kitts and Nevis|Saint Lucia|Saint Martin (French part)|Saint Pierre and Miquelon|Saint Vincent and the Grenadines|Samoa|San Marino|Sao Tome and Principe|Saudi Arabia|Senegal|Serbia|Serbia and Montenegro|Seychelles|Siam|Sierra Leone|Slovakia|Slovenia|Solomon Islands|Somalia|South Georgia and the South Sandwich Islands|South Korea|Soviet Union|Sri Lanka|Sudan|Suriname|Svalbard and Jan Mayen|Swaziland|Syria|Taiwan|Tajikistan|Tanzania|Timor-Leste|Togo|Tokelau|Tonga|Trinidad and Tobago|Tunisia|Turkey|Turkmenistan|Turks and Caicos Islands|Tuvalu|U.S. Virgin Islands|Uganda|Ukraine|United Arab Emirates|United States Minor Outlying Islands|Uruguay|Uzbekistan|Vanuatu|Venezuela|Vietnam|Wallis and Futuna|West Germany|Western Sahara|Yemen|Yugoslavia|Zaire|Zambia|Zimbabwe"/>
+	<setting type="sep"/>
+	<setting label="Language" type="select" id="languages" default="English" values="Any|Arabic|Bulgarian|Chinese|Croatian|Dutch|English|Finnish|French|German|Greek|Hebrew|Hindi|Hungarian|Icelandic|Italian|Japanese|Korean|Norwegian|Persian|Polish|Portuguese|Punjabi|Romanian|Russian|Spanish|Swedish|Turkish|Ukrainian|Abkhazian|Aboriginal|Ach&#xE9;|Acholi|Afrikaans|Aidoukrou|Akan|Albanian|Algonquin|American Sign Language|Amharic|Apache languages|Aragonese|Aramaic|Arapaho|Armenian|Assamese|Assyrian Neo-Aramaic|Athapascan languages|Australian Sign Language|Awadhi|Aymara|Azerbaijani|Bable|Baka|Balinese|Bambara|Basque|Bassari|Belarusian|Bemba|Bengali|Berber languages|Bhojpuri|Bicolano|Bodo|Bosnian|Brazilian Sign Language|Breton|British Sign Language|Burmese|Cantonese|Catalan|Central Khmer|Chaozhou|Chechen|Cherokee|Cheyenne|Chhattisgarhi|Cornish|Corsican|Cree|Creek|Creole|Creoles and pidgins|Crow|Czech|Danish|Dari|Desiya|Dinka|Djerma|Dogri|Dyula|Dzongkha|East-Greenlandic|Eastern Frisian|Egyptian (Ancient)|Esperanto|Estonian|Ewe|Faliasch|Faroese|Filipino|Flemish|Fon|French Sign Language|Fulah|Fur|Gaelic|Galician|Georgian|German Sign Language|Grebo|Greek, Ancient (to 1453)|Greenlandic|Guarani|Gujarati|Gumatj|Gunwinggu|Haitian|Hakka|Haryanvi|Hassanya|Hausa|Hawaiian|Hmong|Hokkien|Hopi|Iban|Ibo|Icelandic Sign Language|Indian Sign Language|Indonesian|Inuktitut|Inupiaq|Irish Gaelic|Japanese Sign Language|Jola-Fonyi|Ju&#x27;hoan|Kaado|Kabuverdianu|Kabyle|Kalmyk-Oirat|Kannada|Karaj&#xE1;|Karbi|Karen|Kazakh|Khanty|Khasi|Kikuyu|Kinyarwanda|Kirundi|Klingon|Kodava|Konkani|Korean Sign Language|Korowai|Kriolu|Kru|Kudmali|Kuna|Kurdish|Kwakiutl|Kyrgyz|Ladakhi|Ladino|Lao|Latin|Latvian|Limbu|Lingala|Lithuanian|Low German|Luxembourgish|Macedonian|Macro-J&#xEA;|Magahi|Maithili|Malagasy|Malay|Malayalam|Malecite-Passamaquoddy|Malinka|Maltese|Manchu|Mandarin|Mandingo|Manipuri|Maori|Mapudungun|Marathi|Marshallese|Masai|Masalit|Maya|Mende|Micmac|Middle English|Min Nan|Minangkabau|Mirandese|Mizo|Mohawk|Mongolian|Montagnais|More|Morisyen|Nagpuri|Nahuatl|Nama|Navajo|Naxi|Ndebele|Neapolitan|Nenets|Nepali|Nisga&#x27;a|None|Norse, Old|North American Indian|Nushi|Nyaneka|Nyanja|Occitan|Ojibwa|Ojihimba|Old English|Oriya|Papiamento|Parsee|Pashtu|Pawnee|Peul|Polynesian|Pular|Purepecha|Quechua|Quenya|Rajasthani|Rawan|Romansh|Romany|Rotuman|Russian Sign Language|Ryukyuan|Saami|Samoan|Sanskrit|Sardinian|Scanian|Serbian|Serbo-Croatian|Serer|Shanghainese|Shanxi|Shona|Shoshoni|Sicilian|Sindarin|Sindhi|Sinhala|Sioux|Slovak|Slovenian|Somali|Songhay|Soninke|Sorbian languages|Sotho|Sousson|Spanish Sign Language|Sranan|Swahili|Swiss German|Sylheti|Tagalog|Tajik|Tamashek|Tamil|Tarahumara|Tatar|Telugu|Teochew|Thai|Tibetan|Tigrigna|Tlingit|Tok Pisin|Tonga (Tonga Islands)|Tsonga|Tswa|Tswana|Tulu|Tupi|Turkmen|Tuvinian|Tzotzil|Ungwatsi|Urdu|Uzbek|Vietnamese|Visayan|Washoe|Welsh|Wolof|Xhosa|Yakut|Yapese|Yiddish|Yoruba|Zulu"/>
+	<setting type="sep"/>
+	<setting label="Filming Locations" type="text" id="locations" default=""/>
+</category>
+
+<category label="Details">
+	<setting label="Production Status" type="select" id="production_status" default="Released" values="Any|Released|Post Production|Filming|Pre Production|Completed|Script|Optioned Property|Announced|Treatment Outline|Pitch|Turnaround|Abandoned|Delayed|Indefinitely Delayed|Active|Unknown"/>
+	<setting type="sep"/>
+	<setting label="Company" type="select" id="companies" default= "Any" values="Any|Fox|Columbia|Dreamworks|MGM|Paramount|Universal|Disney|Warner"/>
+	<setting type="sep"/>
+	<setting label="Runtime Minimum" type="number" id="runtime_low" default=""/>
+	<setting label="Runtime Maximum" type="number" id="runtime_high" default=""/>
+	<setting type="sep"/>
+	<setting label="Plot Keywords" type="text" id="plot" default=""/>
+	<setting type="sep"/>
+	<setting label="Keywords" type="text" id="keywords" default=""/>
+	<setting label="Find Keywords" type="action" action="XBMC.RunPlugin(plugin://plugin.video.imdbsearch/?action=find_keywords)"/>
+	<setting type="sep"/>
+	<setting label="Crew ID" type="text" id="crew" default=""/>
+	<setting label="Find Crew ID" type="action" action="XBMC.RunPlugin(plugin://plugin.video.imdbsearch/?action=find_crew)"/>
+	<setting type="sep"/> 
+	<setting label="Color" type="select" id="colors" default= "Any" values="Any|Color|Black and White|Colorized|ACES"/>
+</category>
+
+<category label="Display">
+	<setting label="Sort" type="select" id="sort" default="Alpha,Asc" values="Any|Moviemeter,Asc|Moviemeter,Desc|Alpha,Asc|Alpha,Desc|User Rating,Asc|User Rating,Desc|Num Votes,Asc|Num Votes,Desc|Boxoffice Gross US,Asc|Boxoffice Gross US,Desc|Runtime,Asc|Runtime,Desc|Year,Asc|Year,Desc|Release Date US,Asc|Release Date US,Desc|My Ratings|My Ratings,Asc"/>
+	<setting label="Results Per Page" type="select" id="count" default="50" values="50|100"/>
+	<setting type="sep"/>
+	<setting label="Custom Prefix for adding to Favourites" type="text" id="prefix" default=""/>
+	<setting type="sep"/>
+	<setting label="Open Settings on Start" type="bool" id="open_settings" default="true"/>
+	<setting label="Enable Default Context Menu Items" type="bool" id="default_context_menu" default="false"/>
+	<setting type="sep"/>
+	<setting label="TV Episode View Mode ID" type="number" id="tv_view" default="50"/>
+	<setting label="Default View Mode ID" type="number" id="video_view" default="50"/>
+</category>
+
+<category label="Accounts">
+	<setting label="Enable Trakt" type="bool" id="trakt" default="true"/>
+</category>
+</settings>

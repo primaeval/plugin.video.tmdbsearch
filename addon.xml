@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.tmdbsearch"
+version="0.0.1"
+name="Advanced TMDb Search"
+provider-name="primaeval">
+<requires>
+  <import addon="xbmc.python" version="2.20.0"/>
+  <import addon="script.module.requests" version="2.9.1" />
+  <import addon="script.module.trakt" version="2.5.1"/>
+  <import addon="script.module.simplejson" version="3.3.0"/>
+</requires>
+<extension point="xbmc.python.pluginsource" library="main.py">
+  <provides>video</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+  <summary lang="en">Advanced TMDb Search</summary>
+  <description lang="en">Powerful front end to the TMDb discover search. Playback is handed off to the Meta4Kodi addon. Built-in context menu for calling the Extended Info addon. Trakt watchlist integration.</description>
+  <disclaimer lang="en"></disclaimer>
+</extension>
+</addon>
+
