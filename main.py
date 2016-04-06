@@ -952,16 +952,16 @@ def list_videos(imdb_url):
         context_items = []
         context_items.append(('Information', 'XBMC.Action(Info)'))
         if info_type:
-            context_items.append(('Extended Info', "XBMC.RunScript(script.extendedinfo,info=%s,imdb_id=%s)" % (info_type,video['code'])))
+            context_items.append(('Extended Info', "XBMC.RunScript(script.extendedinfo,info=%s,id=%s)" % (info_type,video['code'])))
         if type == 'movies' or type == 'tv' or type == 'episode':
             if __settings__.getSetting('trakt') == 'true':
                 context_items.append(('Add to Trakt Watchlist', 
-                "XBMC.RunPlugin(plugin://plugin.video.imdbsearch/?action=addtotraktwatchlist&type=%s&imdb_id=%s&title=%s)" % 
+                "XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=addtotraktwatchlist&type=%s&imdb_id=%s&title=%s)" % 
                 (trakt_type, video['code'], urllib.quote_plus(vlabel.encode("utf8")))))
         if type == 'movies' or type == 'tv':
-            run_str = "plugin://plugin.video.imdbsearch/?action=library&type=%s&imdb_id=%s" % (type,video['code'])
+            run_str = "plugin://plugin.video.tmdbsearch/?action=library&type=%s&imdb_id=%s" % (type,video['code'])
             context_items.append(('Add To Meta Library', "XBMC.RunPlugin(%s)" % run_str ))
-        context_items.append(('Meta Settings', "XBMC.RunPlugin(plugin://plugin.video.imdbsearch/?action=meta_settings)"))
+        context_items.append(('Meta Settings', "XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=meta_settings)"))
         try:
             if type == 'movies' and xbmcaddon.Addon('plugin.video.couchpotato_manager'):
                 context_items.append(
