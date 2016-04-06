@@ -174,6 +174,33 @@ def get_group(groups_select):
     "Bottom 1000":"bottom_1000"}
     return groups_dict[groups_select]
 
+def get_genre_name(id):
+    genres_dict = {
+    9648 :'Mystery',
+    10749 :'Romance' ,
+    10751 :'Family' ,
+    878 :'Science Fiction' ,
+    27 :'Horror' ,
+    53 :'Thriller' ,
+    80 :'Crime' ,
+    18:'Drama' ,
+    14:'Fantasy' ,
+    37:'Western' ,
+    16:'Animation' ,
+    10402:'Music' ,
+    12:'Adventure' ,
+    10769:'Foreign' ,
+    28:'Action',
+    35:'Comedy' ,
+    99:'Documentary' ,
+    10752:'War' ,
+    10770:'TV Movie' ,
+    36:'History' }
+    if id in genres_dict:
+        return genres_dict[id]
+    else:
+        return ''
+    
 def get_genre(genres_select):
     genres_dict = {
     "Any":"",
@@ -886,35 +913,14 @@ def get_videos(url):
         kwargs['with_keywords'] = params['keywords']
         
     kwargs['page'] = params['page']
-    #LANG = 'en'
-    result = tmdbsimple.Discover().movie(**kwargs
-    #{
-    #'page': page, 
-    #'sort_by': sort,
-    #'primary_release_date.gte': "%s" % release_date[0],
-    #'primary_release_date.lte': "%s" % release_date[1],
-    #'vote_count.gte': "%s" % num_votes[0],
-    #'vote_count.lte': "%s" % num_votes[1],
-    #'vote_average.gte': "%s" % user_rating[0],
-    #'vote_average.lte': "%s" % user_rating[1],
-    #'with_genres': genres,
-    #'certification_country': "%s" % certificate_country,
-    #'certification': "%s" % certification,
-    #'certification.lte': "%s" % certificationlte,
-    #'include_adult': include_adult,
-    #}
-    )
-    xbmc.log(repr(result))
-    #(total_results,total_pages,page,results) = result
-    
-    
+    result = tmdbsimple.Discover().movie(**kwargs)
+
     this_page = result['page']
     total_pages = result['total_pages']
     next_url = ''
     if this_page < total_pages:
         next_page = int(this_page) + 1
         params['page'] = next_page
-        #params['page'][0] = int(this_page) + 1&
         next_url = urllib.urlencode(params)
     
     items = result['results']
@@ -944,7 +950,7 @@ def get_videos(url):
         episode = ''
         img_url = 'http://image.tmdb.org/t/p/w500%s' % item['poster_path']
         fanart_url = 'http://image.tmdb.org/t/p/w1000%s' % item['backdrop_path']
-        genres = ''
+        genres = ','.join([get_genre_name(i) for i in item['genre_ids']])
         meta_url = 'plugin://plugin.video.meta/movies/play/tmdb/%s/select' % item['id']
         episode_id = ''
         imdbID = ''
