@@ -809,6 +809,7 @@ def get_url(category,page):
     ("boxoffice_gross_us", "%s,%s" % (__settings__.getSetting( "boxoffice_gross_us_low" ),__settings__.getSetting( "boxoffice_gross_us_high" ))),
     ("sort", get_sort(__settings__.getSetting( "sort" ))),
     ("certificates", __settings__.getSetting( "certificates" )),
+    ("certificationlte", __settings__.getSetting( "certificationlte" )),
     ("countries", get_countries(__settings__.getSetting( "countries" ))),
     ("languages", get_languages(__settings__.getSetting( "languages" ))),
     ("moviemeter", "%s,%s" % (__settings__.getSetting( "moviemeter_low" ),__settings__.getSetting( "moviemeter_high" ))),
@@ -847,7 +848,14 @@ def get_videos(url):
         certificate = params['certificates'].split(',')
     else:
         certificate = ['','']
-    
+    certificate_country = certificate[0]
+    if params['certificationlte'] == 'true':
+        certification = ''
+        certificationlte = certificate[1]
+    else:
+        certification = certificate[1]
+        certificationlte = ''
+        
     page = params['page']
     LANG = 'en'
     result = tmdbsimple.Discover().movie(language=LANG, **{
@@ -860,8 +868,9 @@ def get_videos(url):
     'vote_average.gte': "%s" % user_rating[0],
     'vote_average.lte': "%s" % user_rating[1],
     'with_genres': genres,
-    'certification_country': "%s" % certificate[0],
-    'certification.lte': "%s" % certificate[1],
+    'certification_country': "%s" % certificate_country,
+    'certification': "%s" % certification,
+    'certification.lte': "%s" % certificationlte,
     })
     xbmc.log(repr(result))
     #(total_results,total_pages,page,results) = result
