@@ -795,7 +795,7 @@ def get_categories():
     return ['Any', 'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 
     'Foreign', 'History', 'Horror', 'Music', 'Mystery', 'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western']
 
-def get_url(category,start):
+def get_url(category,page):
     imdb_query = [
     ("count", __settings__.getSetting( "count" )),
     ("title", __settings__.getSetting( "title" )),
@@ -820,7 +820,7 @@ def get_url(category,start):
     ("plot", __settings__.getSetting( "plot" )),
     ("keywords", __settings__.getSetting( "keywords" )),
     ("locations", __settings__.getSetting( "locations" )),
-    ("start", start),
+    ("page", str(page)),
     ]
     #server = get_server(__settings__.getSetting( "server" ))
     #url = "http://%s.imdb.com/search/title?" % server
@@ -833,17 +833,18 @@ def get_url(category,start):
     return (params_url,params)
 
 def get_videos(url):
-    params = urlparse.parse_qs(url)
+    params = dict(urlparse.parse_qsl(url))
+
     xbmc.log(url)
     xbmc.log(repr(params))
     #{'count': ['50'], 'sort': ['popularity.desc'], 'genres': ['Any,27'], 'production_status': ['released'], 'release_date': ['2015,2016'], 'num_votes': ['100,'], 'languages': ['en'], 'user_rating': ['6.0,10.0'], 'title_type': ['movie']}
-    sort = params['sort'][0]
-    genres = params['genres'][0].strip(' ,')
-    release_date = params['release_date'][0].split(',')
-    num_votes = params['num_votes'][0].split(',')
-    user_rating = params['user_rating'][0].split(',')
+    sort = params['sort']
+    genres = params['genres'].strip(' ,')
+    release_date = params['release_date'].split(',')
+    num_votes = params['num_votes'].split(',')
+    user_rating = params['user_rating'].split(',')
     
-    page = 1
+    page = params['page']
     LANG = 'en'
     result = tmdbsimple.Discover().movie(language=LANG, **{
     'page': page, 
@@ -858,6 +859,17 @@ def get_videos(url):
     })
     xbmc.log(repr(result))
     #(total_results,total_pages,page,results) = result
+    
+    
+    this_page = result['page']
+    total_pages = result['total_pages']
+    next_url = ''
+    if this_page < total_pages:
+        next_page = int(this_page) + 1
+        params['page'] = next_page
+        #params['page'][0] = int(this_page) + 1&
+        next_url = urllib.urlencode(params)
+    
     items = result['results']
     videos = []
     for item in items:
@@ -904,7 +916,7 @@ def get_videos(url):
         'code': id,'year':year,'mediatype':'movie','rating':rating,'plot':plot,
         'sort':sort,'cast':cast,'runtime':runtime,'votes':votes, 'certificate':certificate})
             
-    next_url = ''
+    #next_url = ''
     #pagination_match = re.search(r'<span class="pagination">.*<a href="(.+?)">Next', html, flags=(re.DOTALL | re.MULTILINE))
     #if pagination_match:
     #    server = get_server(__settings__.getSetting( "server" ))
@@ -1054,7 +1066,7 @@ def find_episode(imdb_id,episode_id,title):
     
 def list_searches():
     searches = get_searches()
-    (url,params) = get_url('None','')
+    (url,params) = get_url('None',1)
     imdb_url=urllib.quote_plus(url)
     prefix = __settings__.getSetting( "prefix" )
     if not prefix:
