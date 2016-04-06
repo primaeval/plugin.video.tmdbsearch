@@ -810,6 +810,8 @@ def get_url(category,page):
     ("sort", get_sort(__settings__.getSetting( "sort" ))),
     ("certificates", __settings__.getSetting( "certificates" )),
     ("certificationlte", __settings__.getSetting( "certificationlte" )),
+    ("include_adult", __settings__.getSetting( "include_adult" )),
+    ("include_video", __settings__.getSetting( "include_video" )),
     ("countries", get_countries(__settings__.getSetting( "countries" ))),
     ("languages", get_languages(__settings__.getSetting( "languages" ))),
     ("moviemeter", "%s,%s" % (__settings__.getSetting( "moviemeter_low" ),__settings__.getSetting( "moviemeter_high" ))),
@@ -838,40 +840,58 @@ def get_videos(url):
 
     xbmc.log(url)
     xbmc.log(repr(params))
+    kwargs = {}
     #{'count': ['50'], 'sort': ['popularity.desc'], 'genres': ['Any,27'], 'production_status': ['released'], 'release_date': ['2015,2016'], 'num_votes': ['100,'], 'languages': ['en'], 'user_rating': ['6.0,10.0'], 'title_type': ['movie']}
-    sort = params['sort']
-    genres = params['genres'].strip(' ,')
+   
+    kwargs['sort_by'] = params['sort']
+ 
+    kwargs['with_genres'] = params['genres'].strip(' ,')
+    
     release_date = params['release_date'].split(',')
-    num_votes = params['num_votes'].split(',')
+    kwargs['primary_release_date.gte'] = release_date[0]
+    kwargs['primary_release_date.lte'] = release_date[1]
+    
+    if 'num_votes' in params:
+        num_votes = params['num_votes'].split(',')
+        if num_votes[0]:
+            kwargs['vote_count.gte'] = num_votes[0]
+        if num_votes[1]:
+            kwargs['vote_count.lte'] = num_votes[1]
+
     user_rating = params['user_rating'].split(',')
+    kwargs['vote_average.gte'] = user_rating[0]
+    kwargs['vote_average.lte'] = user_rating[1]
+        
+
     if 'certificates' in params:
         certificate = params['certificates'].split(',')
-    else:
-        certificate = ['','']
-    certificate_country = certificate[0]
-    if params['certificationlte'] == 'true':
-        certification = ''
-        certificationlte = certificate[1]
-    else:
-        certification = certificate[1]
-        certificationlte = ''
+        kwargs['certification_country'] = certificate[0]
+        if params['certificationlte'] == 'true':
+            kwargs['certification.lte'] = certificate[1]
+        else:
+            kwargs['certification'] = certificate[1]
+    kwargs['include_adult'] = params['include_adult']
+    kwargs['include_video'] = params['include_video']
         
-    page = params['page']
+    kwargs['page'] = params['page']
     LANG = 'en'
-    result = tmdbsimple.Discover().movie(language=LANG, **{
-    'page': page, 
-    'sort_by': sort,
-    'primary_release_date.gte': "%s" % release_date[0],
-    'primary_release_date.lte': "%s" % release_date[1],
-    'vote_count.gte': "%s" % num_votes[0],
-    'vote_count.lte': "%s" % num_votes[1],
-    'vote_average.gte': "%s" % user_rating[0],
-    'vote_average.lte': "%s" % user_rating[1],
-    'with_genres': genres,
-    'certification_country': "%s" % certificate_country,
-    'certification': "%s" % certification,
-    'certification.lte': "%s" % certificationlte,
-    })
+    result = tmdbsimple.Discover().movie(language=LANG, **kwargs
+    #{
+    #'page': page, 
+    #'sort_by': sort,
+    #'primary_release_date.gte': "%s" % release_date[0],
+    #'primary_release_date.lte': "%s" % release_date[1],
+    #'vote_count.gte': "%s" % num_votes[0],
+    #'vote_count.lte': "%s" % num_votes[1],
+    #'vote_average.gte': "%s" % user_rating[0],
+    #'vote_average.lte': "%s" % user_rating[1],
+    #'with_genres': genres,
+    #'certification_country': "%s" % certificate_country,
+    #'certification': "%s" % certification,
+    #'certification.lte': "%s" % certificationlte,
+    #'include_adult': include_adult,
+    #}
+    )
     xbmc.log(repr(result))
     #(total_results,total_pages,page,results) = result
     

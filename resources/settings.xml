@@ -2,6 +2,7 @@
 
 <category label="Basic">
 	<setting label="Type" type="select" id="title_type" default="Movie" values="Movie|TV"/>
+	<setting label="Include Videos" type="bool" id="include_video" default="false"/>
 	<setting type="sep"/>
 	<setting label="Year Start" type="slider" id="release_date_start" subsetting="true" default="2015" range="1900,1,2020" option="int" />
 	<setting label="Year End" type="slider" id="release_date_end" subsetting="true" default="2016" range="1900,1,2020" option="int" />
@@ -10,6 +11,7 @@
 	<setting type="sep"/>
 	<setting label="Certificate" type="select" id="certificates" default="Any" values="Any|US,NR|US,G|US,PG|US,PG-13|US,R|US,NC-17|GB,U|GB,PG|GB,12A|GB,12|GB,15|GB,18|GB,R18|AU,E|AU,G|AU,PG|AU,M|AU,MA15+|AU,R18+|AU,X18+|AU,RC|NZ,G|NZ,PG|NZ,M|NZ,13|NZ,15|NZ,16|NZ,18|NZ,R|CA,G|CA,PG|CA,14A|CA,18A|CA,R|CA,A|FR,U|FR,10|FR,12|FR,16|FR,18|DE,0|DE,6|DE,12|DE,16|DE,18|IN,U|IN,UA|IN,A"/>
 	<setting label="Certificate or Lower" type="bool" id="certificationlte" default="true"/>
+	<setting label="Include Adult" type="bool" id="include_adult" default="false"/>
 </category>
 
 <category label="Popularity">
