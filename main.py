@@ -73,6 +73,7 @@ def get_server(server_select):
     return server_dict[server_select]
 
 def get_sort(sort_select):
+    return sort_select
     sort_dict = {"Any":"Any",
     "Moviemeter,Asc":"moviemeter,asc",
     "Moviemeter,Desc":"moviemeter,desc",
@@ -174,47 +175,36 @@ def get_group(groups_select):
     return groups_dict[groups_select]
 
 def get_genre(genres_select):
-    genres_dict = {"Any":"Any",
+    genres_dict = {
+    "Any":"",
     "None":"",
-    "Action":"action",
-    "Adventure":"adventure",
-    "Animation":"animation",
-    "Biography":"biography",
-    "Comedy":"comedy",
-    "Crime":"crime",
-    "Documentary":"documentary",
-    "Drama":"drama",
-    "Family":"family",
-    "Fantasy":"fantasy",
-    "Film Noir":"film_noir",
-    "Game show":"game_show",
-    "History":"history",
-    "Horror":"horror",
-    "Music":"music",
-    "Musical":"musical",
-    "Mystery":"mystery",
-    "News":"news",
-    "Reality TV":"reality_tv",
-    "Romance":"romance",
-    "Sci-Fi":"sci_fi",
-    "Sport":"sport",
-    "Talk Show":"talk_show",
-    "Thriller":"thriller",
-    "War":"war",
-    "Western":"western"}
+    'Mystery': 9648,
+    'Romance': 10749,
+    'Family': 10751,
+    'Science Fiction': 878,
+    'Horror': 27,
+    'Thriller': 53,
+    'Crime': 80,
+    'Drama': 18,
+    'Fantasy': 14,
+    'Western': 37,
+    'Animation': 16,
+    'Music': 10402,
+    'Adventure': 12,
+    'Foreign': 10769,
+    'Action': 28,
+    'Comedy': 35,
+    'Documentary': 99,
+    'War': 10752,
+    'TV Movie': 10770,
+    'History': 36}
     return genres_dict[genres_select]
 
 def get_title_type(title_type_select):
-    title_type_dict = {'Feature':'feature',
-    'TV Movie':'tv_movie',
-    'TV Series':'tv_series',
-    'TV Episode':'tv_episode',
-    'TV Special':'tv_special',
-    'Mini Series':'mini_series',
-    'Documentary':'documentary',
-    'Game':'game',
-    'Short':'short',
-    'Video':'video'}
+    title_type_dict = {
+    'Movie':'movie',
+    'TV':'tv',
+    }
     return title_type_dict[title_type_select]
 
 def get_languages(languages_select):
@@ -802,9 +792,8 @@ def get_searches():
     return []
     
 def get_categories():
-    return ["Any","Action","Adventure","Animation","Biography","Comedy","Crime","Documentary","Drama","Family",
-    "Fantasy","Film Noir","Game show","History","Horror","Music","Musical","Mystery","News","Reality TV","Romance",
-    "Sci-Fi","Sport","Talk Show","Thriller","War","Western"]
+    return ['Any', 'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 
+    'Foreign', 'History', 'Horror', 'Music', 'Mystery', 'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western']
 
 def get_url(category,start):
     imdb_query = [
@@ -833,20 +822,40 @@ def get_url(category,start):
     ("locations", __settings__.getSetting( "locations" )),
     ("start", start),
     ]
-    server = get_server(__settings__.getSetting( "server" ))
-    url = "http://%s.imdb.com/search/title?" % server
+    #server = get_server(__settings__.getSetting( "server" ))
+    #url = "http://%s.imdb.com/search/title?" % server
     params = {}
     for (field, value) in imdb_query:
         if not "Any" in value and value != "None" and value != "" and value != "," and value != "*" and value != "*," and value != ",*": #NOTE title has * sometimes
             params[field] = value
     params_url = urllib.urlencode(params)
-    url = "%s%s" % (url,params_url)
-    return (url,params,server)
+    #url = "%s%s" % (url,params_url)
+    return (params_url,params)
 
 def get_videos(url):
+    params = urlparse.parse_qs(url)
+    xbmc.log(url)
+    xbmc.log(repr(params))
+    #{'count': ['50'], 'sort': ['popularity.desc'], 'genres': ['Any,27'], 'production_status': ['released'], 'release_date': ['2015,2016'], 'num_votes': ['100,'], 'languages': ['en'], 'user_rating': ['6.0,10.0'], 'title_type': ['movie']}
+    sort = params['sort'][0]
+    genres = params['genres'][0].strip(' ,')
+    release_date = params['release_date'][0].split(',')
+    num_votes = params['num_votes'][0].split(',')
+    user_rating = params['user_rating'][0].split(',')
+    
     page = 1
     LANG = 'en'
-    result = tmdbsimple.Discover().movie(language=LANG, **{'page': page, 'sort_by': 'revenue.desc'})
+    result = tmdbsimple.Discover().movie(language=LANG, **{
+    'page': page, 
+    'sort_by': sort,
+    'primary_release_date.gte': "%s" % release_date[0],
+    'primary_release_date.lte': "%s" % release_date[1],
+    'vote_count.gte': "%s" % num_votes[0],
+    'vote_count.lte': "%s" % num_votes[1],
+    'vote_average.gte': "%s" % user_rating[0],
+    'vote_average.lte': "%s" % user_rating[1],
+    'with_genres': genres,
+    })
     xbmc.log(repr(result))
     #(total_results,total_pages,page,results) = result
     items = result['results']
@@ -1045,7 +1054,7 @@ def find_episode(imdb_id,episode_id,title):
     
 def list_searches():
     searches = get_searches()
-    (url,params,server) = get_url('None','')
+    (url,params) = get_url('None','')
     imdb_url=urllib.quote_plus(url)
     prefix = __settings__.getSetting( "prefix" )
     if not prefix:
@@ -1059,7 +1068,7 @@ def list_searches():
         genre_icon = get_genre_icon('Any')
         list_item.setArt({'thumb': genre_icon, 'icon': genre_icon, 'fanart': get_background()})
         plot = ""
-        params['server'] = server
+        #params['server'] = server
         for param in sorted(params):
             plot = plot + "%s[COLOR=darkgray]=[/COLOR][B]%s[/B] " % (param, params[param])
         list_item.setInfo('video', {'title': name, 'genre': '', 'plot': plot})

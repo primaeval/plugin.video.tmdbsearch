@@ -1,14 +1,12 @@
 <settings>
 
 <category label="Basic">
-	<setting label="Title" type="text" id="title" default=""/>
-	<setting type="sep"/>
-	<setting label="Type" type="select" id="title_type" default="Feature" values="Feature|TV Movie|TV Series|TV Episode|TV Special|Mini Series|Documentary|Game|Short|Video"/>
+	<setting label="Type" type="select" id="title_type" default="Movie" values="Movie|TV"/>
 	<setting type="sep"/>
 	<setting label="Year Start" type="slider" id="release_date_start" subsetting="true" default="2015" range="1900,1,2020" option="int" />
 	<setting label="Year End" type="slider" id="release_date_end" subsetting="true" default="2016" range="1900,1,2020" option="int" />
 	<setting type="sep"/>
-	<setting label="Extra Genre" type="select" id="genres" default="None" values="None|Action|Adventure|Animation|Biography|Comedy|Crime|Documentary|Drama|Family|Fantasy|Film Noir|Game show|History|Horror|Music|Musical|Mystery|News|Reality TV|Romance|Sci-Fi|Sport|Talk Show|Thriller|War|Western"/>
+	<setting label="Extra Genre" type="select" id="genres" default="None" values="None|Action|Adventure|Animation|Comedy|Crime|Documentary|Drama|Family|Fantasy|Foreign|History|Horror|Music|Mystery|Romance|Science Fiction|TV Movie|Thriller|War|Western"/>
 	<setting type="sep"/>
 	<setting label="Certificate" type="select" id="certificates" default="Any" values="Any|US:G|US:PG|US:PG_13|US:R|US:NC_17|GB:U|GB:PG|GB:12|GB:12A|GB:15|GB:18|GB:R18"/>
 
@@ -60,7 +58,7 @@
 </category>
 
 <category label="Display">
-	<setting label="Sort" type="select" id="sort" default="Alpha,Asc" values="Any|Moviemeter,Asc|Moviemeter,Desc|Alpha,Asc|Alpha,Desc|User Rating,Asc|User Rating,Desc|Num Votes,Asc|Num Votes,Desc|Boxoffice Gross US,Asc|Boxoffice Gross US,Desc|Runtime,Asc|Runtime,Desc|Year,Asc|Year,Desc|Release Date US,Asc|Release Date US,Desc|My Ratings|My Ratings,Asc"/>
+	<setting label="Sort" type="select" id="sort" default="original_title.asc" values="popularity.asc|popularity.desc|release_date.asc|release_date.desc|revenue.asc|revenue.desc|primary_release_date.asc|primary_release_date.desc|original_title.asc|original_title.desc|vote_average.asc|vote_average.desc|vote_count.asc|vote_count.desc|"/>
 	<setting label="Results Per Page" type="select" id="count" default="50" values="50|100"/>
 	<setting type="sep"/>
 	<setting label="Custom Prefix for adding to Favourites" type="text" id="prefix" default=""/>
