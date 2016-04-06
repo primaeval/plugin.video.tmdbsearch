@@ -878,6 +878,12 @@ def get_videos(url):
     
     if 'companies' in params:
         kwargs['with_companies'] = params['companies']
+
+    if 'role' in params:
+        kwargs['with_people'] = params['role']
+        
+    if 'keywords' in params:
+        kwargs['with_keywords'] = params['keywords']
         
     kwargs['page'] = params['page']
     #LANG = 'en'
@@ -1316,77 +1322,46 @@ def add_to_trakt_watchlist(type,imdb_id,title):
         dialog = xbmcgui.Dialog()
         dialog.notification("Trakt: add to watchlist",title)
     
-def find_crew(name=''):
+def find_crew(keyword=''):
     dialog = xbmcgui.Dialog()
-    if not name:
-        name = dialog.input('Search for crew (actor, director etc)', type=xbmcgui.INPUT_ALPHANUM)
-    dialog.notification('IMDB:','Finding crew details...')
-    if not name:
-        dialog.notification('IMDB:','No name!')
+    if not keyword:
+        keyword = dialog.input('Search for crew', type=xbmcgui.INPUT_ALPHANUM)
+    dialog.notification('TMDb:','Finding crew matches...')
+    if not keyword:
+        dialog.notification('TMDb:','No input!')
         return
-    url = "http://www.imdb.com/xml/find?json=1&nr=1&q=%s&nm=on" % urllib.quote_plus(name)
-    r = requests.get(url)
-    json = r.json()
-    crew = []
-    if 'name_exact' in json:
-        pop = json['name_exact']
-        for p in pop:
-            crew.append((p['name'],p['id']))
-    if 'name_popular' in json:
-        pop = json['name_popular']
-        for p in pop:
-            crew.append((p['name'],p['id']))
-    if 'name_approx' in json:
-        approx = json['name_approx']
-        for p in approx:
-            crew.append((p['name'],p['id']))
-    if 'name_substring' in json:
-        pop = json['name_substring']
-        for p in pop:
-            crew.append((p['name'],p['id']))
-    names = [item[0] for item in crew]
-    if names:
-        index = dialog.select('Pick crew member',names)
+    kwargs = {'query': urllib.quote_plus(keyword)}
+    result = tmdbsimple.Search().person(**kwargs)
+    crew = result['results']
+    crew = [[i['name'],i['id']] for i in crew]
+    names = [i[0] for i in crew]
+    if crew:
+        index = dialog.select('Pick crew',names)
         id = crew[index][1]
-        __settings__.setSetting('crew',id)
+        __settings__.setSetting('crew',str(id))
     else:
-        dialog.notification('IMDB:','Nothing Found!')
+        dialog.notification('TMDb:','Nothing Found!')
 
 def find_keywords(keyword=''):
     dialog = xbmcgui.Dialog()
     if not keyword:
-        keyword = dialog.input('Search for keyword', type=xbmcgui.INPUT_ALPHANUM)
-    dialog.notification('IMDB:','Finding keyword matches...')
+        keyword = dialog.input('Search for keywords', type=xbmcgui.INPUT_ALPHANUM)
+    dialog.notification('TMDb:','Finding keywords matches...')
     if not keyword:
-        dialog.notification('IMDB:','No keyword!')
+        dialog.notification('TMDb:','No input!')
         return
-    url = "http://www.imdb.com/xml/find?json=1&nr=1&q=%s&kw=on" % urllib.quote_plus(keyword)
-    r = requests.get(url)
-    json = r.json()
-    keywords = []
-    if 'keyword_exact' in json:
-        pop = json['keyword_exact']
-        for p in pop:
-            keywords.append((p['description'],p['keyword']))    
-    if 'keyword_popular' in json:
-        pop = json['keyword_popular']
-        for p in pop:
-            keywords.append((p['description'],p['keyword']))
-    if 'keyword_approx' in json:
-        approx = json['keyword_approx']
-        for p in approx:
-            keywords.append((p['description'],p['keyword']))
-    if 'keyword_substring' in json:
-        approx = json['keyword_substring']
-        for p in approx:
-            keywords.append((p['description'],p['keyword']))
-    names = [item[0] for item in keywords]
+    kwargs = {'query': urllib.quote_plus(keyword)}
+    result = tmdbsimple.Search().keyword(**kwargs)
+    xbmc.log(repr(result))
+    keywords = result['results']
+    keywords = [[i['name'],i['id']] for i in keywords]
+    names = [i[0] for i in keywords]
     if keywords:
-        index = dialog.select('Pick keywords member',names)
+        index = dialog.select('Pick keyword',names)
         id = keywords[index][1]
-        __settings__.setSetting('keywords',id)
+        __settings__.setSetting('keywords',str(id))
     else:
-        dialog.notification('IMDB:','Nothing Found!')
+        dialog.notification('TMDb:','Nothing Found!')
         
 def find_company(keyword=''):
     dialog = xbmcgui.Dialog()
