@@ -67,113 +67,6 @@ def get_genre_icon(genre):
         return get_icon_path(icons[genre])
     return "DefaultVideo.png"
 
-def get_server(server_select):
-    server_dict = {"Original Title":"akas",
-    "Normal":"www"}
-    return server_dict[server_select]
-
-def get_sort(sort_select):
-    return sort_select
-    sort_dict = {"Any":"Any",
-    "Moviemeter,Asc":"moviemeter,asc",
-    "Moviemeter,Desc":"moviemeter,desc",
-    "Alpha,Asc":"alpha,asc",
-    "Alpha,Desc":"alpha,desc",
-    "User Rating,Asc":"user_rating,asc",
-    "User Rating,Desc":"user_rating,desc",
-    "Num Votes,Asc":"num_votes,asc",
-    "Num Votes,Desc":"num_votes,desc",
-    "Boxoffice Gross US,Asc":"boxoffice_gross_us,asc",
-    "Boxoffice Gross US,Desc":"boxoffice_gross_us,desc",
-    "Runtime,Asc":"runtime,asc",
-    "Runtime,Desc":"runtime,desc",
-    "Year,Asc":"year,asc",
-    "Year,Desc":"year,desc",
-    "Release Date US,Asc":"release_date_us,asc",
-    "Release Date US,Desc":"release_date_us,desc",
-    "My Ratings":"my_ratings",
-    "My Ratings,Asc":"my_ratings,asc"}
-    return sort_dict[sort_select]
-
-def get_color(color_select):
-    color_dict = {"Any":"Any",
-    "Color":"color",
-    "Black and White":"black_and_white",
-    "Colorized":"colorized",
-    "ACES":"aces"}
-    return color_dict[color_select]
-    
-def get_certificate(certificate_select):
-    certificate_dict = {"Any":"Any",
-    "US:G":"us:g",
-    "US:PG":"us:pg",
-    "US:PG_13":"us:pg_13",
-    "US:R":"us:r",
-    "US:NC_17":"us:nc_17",
-    "GB:U"  :"gb:u"  ,
-    "GB:PG" :"gb:pg" ,
-    "GB:12" :"gb:12" ,
-    "GB:12A":"gb:12a",
-    "GB:15" :"gb:15" ,
-    "GB:18" :"gb:18" ,
-    "GB:R18":"gb:r18",
-    }
-    return certificate_dict[certificate_select]
-
-def get_company(companies_select):
-    companies_dict = {"Any":"Any",
-    "Fox":"fox",
-    "Columbia":"columbia",
-    "Dreamworks":"dreamworks",
-    "MGM":"mgm",
-    "Paramount":"paramount",
-    "Universal":"universal",
-    "Disney":"disney",
-    "Warner":"warner"}
-    return companies_dict[companies_select]
-
-def get_production_status(production_status_select):
-    production_status_dict = {"Any":"*",
-    "Released":"released",
-    "Post Production":"post production",
-    "Filming":"filming",
-    "Pre Production":"pre production",
-    "Completed":"completed",
-    "Script":"script",
-    "Optioned Property":"optioned property",
-    "Announced":"announced",
-    "Treatment Outline":"treatment outline",
-    "Pitch":"pitch",
-    "Turnaround":"turnaround",
-    "Abandoned":"abandoned",
-    "Delayed":"delayed",
-    "Indefinitely Delayed":"indefinitely delayed",
-    "Active":"active",
-    "Unknown":"unknown"}
-    return production_status_dict[production_status_select]
-
-def get_group(groups_select):
-    groups_dict = {"Any":"*",
-    "Top 100":"top_100",
-    "Top 250":"top_250",
-    "Top 1000":"top_1000",
-    "Now Playing Us":"now-playing-us",
-    "Oscar Winners":"oscar_winners",
-    "Oscar Best Picture Winners":"oscar_best_picture_winners",
-    "Oscar Best Director Winners":"oscar_best_director_winners",
-    "Oscar Nominees":"oscar_nominees",
-    "Emmy Winners":"emmy_winners",
-    "Emmy Nominees":"emmy_nominees",
-    "Golden Globe Winners":"golden_globe_winners",
-    "Golden Globe Nominees":"golden_globe_nominees",
-    "Razzie Winners":"razzie_winners",
-    "Razzie Nominees":"razzie_nominees",
-    "National Film Registry":"national_film_registry",
-    "Bottom 100":"bottom_100",
-    "Bottom 250":"bottom_250",
-    "Bottom 1000":"bottom_1000"}
-    return groups_dict[groups_select]
-
 def get_genre_name(id):
     genres_dict = {
     9648 :'Mystery',
@@ -831,65 +724,42 @@ def get_url(category,page):
     ("user_rating", "%.1f,%.1f" % (float(__settings__.getSetting( "user_rating_low" )),float(__settings__.getSetting( "user_rating_high" )))),
     ("num_votes", "%s,%s" % (__settings__.getSetting( "num_votes_low" ),__settings__.getSetting( "num_votes_high" ))),
     ("genres", "%s,%s" % (get_genre(category),get_genre(__settings__.getSetting( "genres" )))),   
-    #("groups", "%s" % (get_group(__settings__.getSetting( "groups" )))),  
     ("companies", __settings__.getSetting( "companies" )),
-    #("boxoffice_gross_us", "%s,%s" % (__settings__.getSetting( "boxoffice_gross_us_low" ),__settings__.getSetting( "boxoffice_gross_us_high" ))),
-    ("sort", get_sort(__settings__.getSetting( "sort" ))),
     ("certificates", __settings__.getSetting( "certificates" )),
     ("certificationlte", __settings__.getSetting( "certificationlte" )),
     ("include_adult", __settings__.getSetting( "include_adult" )),
     ("include_video", __settings__.getSetting( "include_video" )),
-    ("countries", get_countries(__settings__.getSetting( "countries" ))),
     ("languages", get_languages(__settings__.getSetting( "languages" ))),
-    #("moviemeter", "%s,%s" % (__settings__.getSetting( "moviemeter_low" ),__settings__.getSetting( "moviemeter_high" ))),
-    #("production_status", get_production_status(__settings__.getSetting( "production_status" ))),
-    #("runtime", "%s,%s" % (__settings__.getSetting( "runtime_low" ),__settings__.getSetting( "runtime_high" ))),
-    ("sort", get_sort(__settings__.getSetting( "sort" ))),
-    #("colors", get_color(__settings__.getSetting( "colors" ))),
+    ("sort", __settings__.getSetting( "sort" )),
     ("role", __settings__.getSetting( "crew" )),
     ("plot", __settings__.getSetting( "plot" )),
     ("keywords", __settings__.getSetting( "keywords" )),
-    #("locations", __settings__.getSetting( "locations" )),
     ("page", str(page)),
     ]
-    #server = get_server(__settings__.getSetting( "server" ))
-    #url = "http://%s.imdb.com/search/title?" % server
     params = {}
     for (field, value) in imdb_query:
         if not "Any" in value and value != "None" and value != "" and value != "," and value != "*" and value != "*," and value != ",*": #NOTE title has * sometimes
             params[field] = value
     params_url = urllib.urlencode(params)
-    #url = "%s%s" % (url,params_url)
     return (params_url,params)
 
 def get_videos(url):
     params = dict(urlparse.parse_qsl(url))
-
-    xbmc.log(url)
-    xbmc.log(repr(params))
     kwargs = {}
-    #{'count': ['50'], 'sort': ['popularity.desc'], 'genres': ['Any,27'], 'production_status': ['released'], 'release_date': ['2015,2016'], 'num_votes': ['100,'], 'languages': ['en'], 'user_rating': ['6.0,10.0'], 'title_type': ['movie']}
-   
     kwargs['sort_by'] = params['sort']
- 
     kwargs['with_genres'] = params['genres'].strip(' ,')
-    
     release_date = params['release_date'].split(',')
     kwargs['primary_release_date.gte'] = release_date[0]
     kwargs['primary_release_date.lte'] = release_date[1]
-    
     if 'num_votes' in params:
         num_votes = params['num_votes'].split(',')
         if num_votes[0]:
             kwargs['vote_count.gte'] = num_votes[0]
         if num_votes[1]:
             kwargs['vote_count.lte'] = num_votes[1]
-
     user_rating = params['user_rating'].split(',')
     kwargs['vote_average.gte'] = user_rating[0]
     kwargs['vote_average.lte'] = user_rating[1]
-        
-
     if 'certificates' in params:
         certificate = params['certificates'].split(',')
         kwargs['certification_country'] = certificate[0]
@@ -899,22 +769,17 @@ def get_videos(url):
             kwargs['certification'] = certificate[1]
     kwargs['include_adult'] = params['include_adult']
     kwargs['include_video'] = params['include_video']
-
     if 'languages' in params:
         kwargs['language'] = params['languages']
-    
     if 'companies' in params:
         kwargs['with_companies'] = params['companies']
-
     if 'role' in params:
-        kwargs['with_people'] = params['role']
-        
+        kwargs['with_people'] = params['role']  
     if 'keywords' in params:
         kwargs['with_keywords'] = params['keywords']
-        
     kwargs['page'] = params['page']
     result = tmdbsimple.Discover().movie(**kwargs)
-
+    
     this_page = result['page']
     total_pages = result['total_pages']
     next_url = ''
@@ -926,26 +791,6 @@ def get_videos(url):
     items = result['results']
     videos = []
     for item in items:
-        xbmc.log(repr(item))
-        
-        #u'poster_path': u'/vZpB8ezB1IqpxI9rx553TuGwDzJ.jpg',
-		#u'title': u'StarWars: TheForceAwakens',
-		#u'overview': u'ThirtyyearsafterdefeatingtheGalacticEmpire, crosses paths with the mermaid, Shan, who is sent to avenge her people.",
-		#HanSoloandhisalliesfaceanewthreatfromtheevilKyloRenandhisarmyofStormtroopers.',
-		#u'release_date': u'2015-12-15',
-		#u'popularity': 40.29992,
-		#u'original_title': u'StarWars: TheForceAwakens',
-		#u'backdrop_path': u'/njv65RTipNSTozFLuF85jL0bcQe.jpg',
-		#u'vote_count': 3609,
-		#u'video': False,
-		#u'adult': False,
-		#u'vote_average': 7.68,
-		#u'original_language': u'en',
-		#u'id': 140607,
-		#u'genre_ids': [28,
-		#12,
-		#878,
-        #14]
         title = item['title']
         episode = ''
         img_url = 'http://image.tmdb.org/t/p/w500%s' % item['poster_path']
@@ -963,125 +808,13 @@ def get_videos(url):
         runtime = ''
         votes = item['vote_count']
         certificate = ''
-    
         videos.append({'name':title,'episode':episode,'thumb':img_url,'fanart':fanart_url,'genre':genres,
         'video':meta_url,'episode_id':episode_id,'imdb_id':imdbID,
         'code': id,'year':year,'mediatype':'movie','rating':rating,'plot':plot,
         'sort':sort,'cast':cast,'runtime':runtime,'votes':votes, 'certificate':certificate})
             
-    #next_url = ''
-    #pagination_match = re.search(r'<span class="pagination">.*<a href="(.+?)">Next', html, flags=(re.DOTALL | re.MULTILINE))
-    #if pagination_match:
-    #    server = get_server(__settings__.getSetting( "server" ))
-    #    next_url = "http://%s.imdb.com%s" % (server,pagination_match.group(1))
-        
     return (videos,next_url)
     
-def get_videosimdb(url):
-    r = requests.get(url)
-    html = r.text
-    html = HTMLParser.HTMLParser().unescape(html)
-    
-    items = html.split('<tr class="')
-    videos = []
-    for item in items:
-        
-        if not re.search(r'^.*?detailed"',item):
-            continue
-        
-        img_url = ''
-        img_match = re.search(r'<img src="(.*?)"', item)
-        if img_match:
-            img = img_match.group(1)
-            img_url = re.sub(r'S[XY].*_.jpg','SX344_.jpg',img) #NOTE 344 is Confluence List View width
-
-        title = ''
-        imdbID = ''
-        year = ''
-        title_match = re.search(r'<td class="title">.*?<a href="/title/(.+?)/">(.*?)</a>', item, flags=(re.DOTALL | re.MULTILINE))
-        if title_match:
-            imdbID = title_match.group(1)
-            title = title_match.group(2)
-
-        title_match = re.search(r'<a href="/title/(.+?)/" title="(.+?) \((.+?)\)"', item, flags=(re.DOTALL | re.MULTILINE))
-        if title_match:
-            year = title_match.group(3)
-
-        episode = ''
-        episode_id = ''
-        episode_match = re.search(r'<span class="episode">Episode: <a href="/title/(.+?)/">(.+?)</a>(.+?)</span>', item, flags=(re.DOTALL | re.MULTILINE))
-        if episode_match:
-            episode_id = episode_match.group(1)
-            episode = "%s%s" % (episode_match.group(2), episode_match.group(3))
-            year = episode_match.group(3).strip('() ')
-            
-        rating = ''
-        votes = ''
-        rating_match = re.search(r'title="Users rated this (.+?)/10 \((.+?) votes\)', item, flags=(re.DOTALL | re.MULTILINE))
-        if rating_match:
-            rating = rating_match.group(1)
-            votes = rating_match.group(2)
-            votes = re.sub(',','',votes)
-            
-        plot = ''
-        plot_match = re.search(r'<span class="outline">(.+?)</span>', item, flags=(re.DOTALL | re.MULTILINE))
-        if plot_match:
-            plot = plot_match.group(1)
-            
-        cast = []
-        cast_match = re.search(r'<span class="credit">(.+?)</span>', item, flags=(re.DOTALL | re.MULTILINE))
-        if cast_match:
-            cast = cast_match.group(1)
-            cast_list = re.findall(r'<a.+?>(.+?)</a>', cast)
-            cast = cast_list
-                
-        genres = ''
-        genre_match = re.search(r'<span class="genre">(.+?)</span>', item, flags=(re.DOTALL | re.MULTILINE))
-        if genre_match:
-            genre = genre_match.group(1)
-            genre_list = re.findall(r'<a.+?>(.+?)</a>', genre)
-            genres = ",".join(genre_list)
-                
-        runtime = ''
-        runtime_match = re.search(r'<span class="runtime">(.+?) mins\.</span>', item, flags=(re.DOTALL | re.MULTILINE))
-        if runtime_match:
-            runtime = int(runtime_match.group(1)) * 60
-                
-        sort = ''
-        sort_match = re.search(r'<span class="sort"><span title="(.+?)"', item, flags=(re.DOTALL | re.MULTILINE))
-        if sort_match:
-            sort = sort_match.group(1)
-
-        certificate = ''
-        certificate_match = re.search(r'<span class="certificate">.*?title="(.+?)"', item, flags=(re.DOTALL | re.MULTILINE))
-        if certificate_match:
-            certificate = certificate_match.group(1)
-            
-        if imdbID:
-            id = imdbID
-            title_type = get_title_type(__settings__.getSetting( "title_type" ))
-            if title_type == "tv_series" or title_type == "mini_series": 
-                meta_url = "plugin://plugin.video.meta/tv/search_term/%s/1" % re.sub(' ','+',title)
-            elif title_type == "tv_episode":
-                vlabel = "%s - %s" % (title, episode)
-                vlabel = urllib.quote_plus(vlabel.encode("utf8"))
-                meta_url = "plugin://plugin.video.imdbsearch/?action=episode&imdb_id=%s&episode_id=%s&title=%s" % (imdbID,episode_id,vlabel)
-                id = episode_id
-            else:
-                meta_url = 'plugin://plugin.video.meta/movies/play/imdb/%s/select' % imdbID
-
-            videos.append({'name':title,'episode':episode,'thumb':img_url,'genre':genres,
-            'video':meta_url,'episode_id':episode_id,'imdb_id':imdbID,
-            'code': id,'year':year,'mediatype':'movie','rating':rating,'plot':plot,
-            'sort':sort,'cast':cast,'runtime':runtime,'votes':votes, 'certificate':certificate})
-            
-    next_url = ''
-    pagination_match = re.search(r'<span class="pagination">.*<a href="(.+?)">Next', html, flags=(re.DOTALL | re.MULTILINE))
-    if pagination_match:
-        server = get_server(__settings__.getSetting( "server" ))
-        next_url = "http://%s.imdb.com%s" % (server,pagination_match.group(1))
-        
-    return (videos,next_url)
     
 def get_tvdb_id(imdb_id):
     tvdb_url = "http://thetvdb.com//api/GetSeriesByRemoteID.php?imdbid=%s" % imdb_id
@@ -1133,7 +866,6 @@ def list_searches():
         genre_icon = get_genre_icon('Any')
         list_item.setArt({'thumb': genre_icon, 'icon': genre_icon, 'fanart': get_background()})
         plot = ""
-        #params['server'] = server
         for param in sorted(params):
             plot = plot + "%s[COLOR=darkgray]=[/COLOR][B]%s[/B] " % (param, params[param])
         list_item.setInfo('video', {'title': name, 'genre': '', 'plot': plot})
@@ -1320,7 +1052,7 @@ def add_to_trakt_watchlist(type,imdb_id,title):
             type: [
                 {
                     'ids': {
-                        'imdb': imdb_id
+                        'tmdb': imdb_id
                     }
                 }
             ]
