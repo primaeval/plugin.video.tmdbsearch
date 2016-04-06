@@ -808,7 +808,7 @@ def get_url(category,page):
     ("companies", get_company(__settings__.getSetting( "companies" ))),
     ("boxoffice_gross_us", "%s,%s" % (__settings__.getSetting( "boxoffice_gross_us_low" ),__settings__.getSetting( "boxoffice_gross_us_high" ))),
     ("sort", get_sort(__settings__.getSetting( "sort" ))),
-    ("certificates", get_certificate(__settings__.getSetting( "certificates" ))),
+    ("certificates", __settings__.getSetting( "certificates" )),
     ("countries", get_countries(__settings__.getSetting( "countries" ))),
     ("languages", get_languages(__settings__.getSetting( "languages" ))),
     ("moviemeter", "%s,%s" % (__settings__.getSetting( "moviemeter_low" ),__settings__.getSetting( "moviemeter_high" ))),
@@ -843,6 +843,10 @@ def get_videos(url):
     release_date = params['release_date'].split(',')
     num_votes = params['num_votes'].split(',')
     user_rating = params['user_rating'].split(',')
+    if 'certificates' in params:
+        certificate = params['certificates'].split(',')
+    else:
+        certificate = ['','']
     
     page = params['page']
     LANG = 'en'
@@ -856,6 +860,8 @@ def get_videos(url):
     'vote_average.gte': "%s" % user_rating[0],
     'vote_average.lte': "%s" % user_rating[1],
     'with_genres': genres,
+    'certification_country': "%s" % certificate[0],
+    'certification.lte': "%s" % certificate[1],
     })
     xbmc.log(repr(result))
     #(total_results,total_pages,page,results) = result
