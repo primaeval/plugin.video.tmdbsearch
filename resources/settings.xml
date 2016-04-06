@@ -30,8 +30,8 @@
 	<setting label="Company ID" type="number" id="companies" default=""/>
 	<setting label="Find Company ID" type="action" action="XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=find_company)"/>
 	<setting type="sep"/>
-	<setting label="Keywords" type="text" id="keywords" default=""/>
-	<setting label="Find Keywords" type="action" action="XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=find_keywords)"/>
+	<setting label="Keyword ID" type="text" id="keywords" default=""/>
+	<setting label="Find Keyword ID" type="action" action="XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=find_keywords)"/>
 	<setting type="sep"/>
 	<setting label="Crew ID" type="text" id="crew" default=""/>
 	<setting label="Find Crew ID" type="action" action="XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=find_crew)"/>
