@@ -746,11 +746,41 @@ def get_url(category,page):
 def get_videos(url):
     params = dict(urlparse.parse_qsl(url))
     kwargs = {}
-    kwargs['sort_by'] = params['sort']
+    
+    if params['title_type'] == 'movie':
+        kwargs['sort_by'] = params['sort']
+        release_date = params['release_date'].split(',')
+        kwargs['primary_release_date.gte'] = release_date[0]
+        kwargs['primary_release_date.lte'] = release_date[1]
+        if 'certificates' in params:
+            certificate = params['certificates'].split(',')
+            kwargs['certification_country'] = certificate[0]
+            if params['certificationlte'] == 'true':
+                kwargs['certification.lte'] = certificate[1]
+            else:
+                kwargs['certification'] = certificate[1]
+        kwargs['include_video'] = params['include_video']
+        if 'role' in params:
+            kwargs['with_people'] = params['role']  
+        if 'keywords' in params:
+            kwargs['with_keywords'] = params['keywords']
+        if 'companies' in params:
+            kwargs['with_companies'] = params['companies']
+    else:
+        sort = params['sort'] # NOTE no sort by title/name ???!!!
+        if sort == 'release_date.desc' or sort == 'primary_release_date.desc': #TODO not quite right
+            sort = 'first_air_date.desc'
+        elif sort == 'release_date.asc' or sort == 'primary_release_date.asc': #TODO not quite right
+            sort = 'first_air_date.asc'
+        elif sort in ['revenue.asc','revenue.desc''original_title.asc','original_title.desc']:
+            pass
+        kwargs['sort_by'] = sort 
+        
+        release_date = params['release_date'].split(',')
+        kwargs['first_air_date.gte'] = release_date[0]
+        kwargs['first_air_date.lte'] = release_date[1]
+
     kwargs['with_genres'] = params['genres'].strip(' ,')
-    release_date = params['release_date'].split(',')
-    kwargs['primary_release_date.gte'] = release_date[0]
-    kwargs['primary_release_date.lte'] = release_date[1]
     if 'num_votes' in params:
         num_votes = params['num_votes'].split(',')
         if num_votes[0]:
@@ -760,26 +790,15 @@ def get_videos(url):
     user_rating = params['user_rating'].split(',')
     kwargs['vote_average.gte'] = user_rating[0]
     kwargs['vote_average.lte'] = user_rating[1]
-    if 'certificates' in params:
-        certificate = params['certificates'].split(',')
-        kwargs['certification_country'] = certificate[0]
-        if params['certificationlte'] == 'true':
-            kwargs['certification.lte'] = certificate[1]
-        else:
-            kwargs['certification'] = certificate[1]
-    kwargs['include_adult'] = params['include_adult']
-    kwargs['include_video'] = params['include_video']
     if 'languages' in params:
         kwargs['language'] = params['languages']
-    if 'companies' in params:
-        kwargs['with_companies'] = params['companies']
-    if 'role' in params:
-        kwargs['with_people'] = params['role']  
-    if 'keywords' in params:
-        kwargs['with_keywords'] = params['keywords']
     kwargs['page'] = params['page']
-    result = tmdbsimple.Discover().movie(**kwargs)
     
+    if params['title_type'] == 'movie':
+        result = tmdbsimple.Discover().movie(**kwargs)
+    else:
+        result = tmdbsimple.Discover().tv(**kwargs)
+
     this_page = result['page']
     total_pages = result['total_pages']
     next_url = ''
@@ -791,7 +810,15 @@ def get_videos(url):
     items = result['results']
     videos = []
     for item in items:
-        title = item['title']
+        if params['title_type'] == 'movie':
+            if __settings__.getSetting( "original_title" ):
+                title = item['title']
+            else:
+                title = item['original_title']
+            year = item['release_date'][0:4]
+        else:
+            title = item['name']
+            year = item['first_air_date'][0:4]
         episode = ''
         img_url = 'http://image.tmdb.org/t/p/w500%s' % item['poster_path']
         fanart_url = 'http://image.tmdb.org/t/p/w1000%s' % item['backdrop_path']
@@ -800,7 +827,6 @@ def get_videos(url):
         episode_id = ''
         imdbID = ''
         id = item['id']
-        year = item['release_date'][0:4]
         rating = item['vote_average']
         plot = item['overview']
         sort = ''
@@ -962,12 +988,13 @@ def list_videos(imdb_url):
             run_str = "plugin://plugin.video.tmdbsearch/?action=library&type=%s&imdb_id=%s" % (type,video['code'])
             context_items.append(('Add To Meta Library', "XBMC.RunPlugin(%s)" % run_str ))
         context_items.append(('Meta Settings', "XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=meta_settings)"))
-        try:
-            if type == 'movies' and xbmcaddon.Addon('plugin.video.couchpotato_manager'):
-                context_items.append(
-                ('Add to Couch Potato', "XBMC.RunPlugin(plugin://plugin.video.couchpotato_manager/movies/add-by-id/%s)" % (video['code'])))
-        except:
-            pass
+        if False: #TODO need to find a tmdb to imdb id conversion 
+            try:
+                if type == 'movies' and xbmcaddon.Addon('plugin.video.couchpotato_manager'):
+                    context_items.append(
+                    ('Add to Couch Potato', "XBMC.RunPlugin(plugin://plugin.video.couchpotato_manager/movies/add-by-id/%s)" % (video['code'])))
+            except:
+                pass
         try:
             if type == 'tv' and xbmcaddon.Addon('plugin.video.sickrage'):
                 context_items.append(
@@ -1090,7 +1117,6 @@ def find_keywords(keyword=''):
         return
     kwargs = {'query': urllib.quote_plus(keyword)}
     result = tmdbsimple.Search().keyword(**kwargs)
-    xbmc.log(repr(result))
     keywords = result['results']
     keywords = [[i['name'],i['id']] for i in keywords]
     names = [i[0] for i in keywords]
