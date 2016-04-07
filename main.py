@@ -1014,13 +1014,12 @@ def list_videos(imdb_url):
             run_str = "plugin://plugin.video.tmdbsearch/?action=library&type=%s&name=%s" % (type,video['name'])
         context_items.append(('Add To Meta Library', "XBMC.RunPlugin(%s)" % run_str ))
         context_items.append(('Meta Settings', "XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=meta_settings)"))
-        if False: #TODO need to find a tmdb to imdb id conversion 
-            try:
-                if type == 'movies' and xbmcaddon.Addon('plugin.video.couchpotato_manager'):
-                    context_items.append(
-                    ('Add to Couch Potato', "XBMC.RunPlugin(plugin://plugin.video.couchpotato_manager/movies/add-by-id/%s)" % (video['code'])))
-            except:
-                pass
+        try:
+            if type == 'movies' and xbmcaddon.Addon('plugin.video.couchpotato_manager'):
+                context_items.append(
+                ('Add to Couch Potato', "XBMC.RunPlugin(plugin://plugin.video.couchpotato_manager/movies/add?title=%s)" % (video['name'])))
+        except:
+            pass
         try:
             if type == 'tv' and xbmcaddon.Addon('plugin.video.sickrage'):
                 context_items.append(
