@@ -816,14 +816,16 @@ def get_videos(url):
             else:
                 title = item['original_title']
             year = item['release_date'][0:4]
+            meta_url = 'plugin://plugin.video.meta/movies/play/tmdb/%s/select' % item['id']
         else:
             title = item['name']
             year = item['first_air_date'][0:4]
+            meta_url = 'plugin://plugin.video.meta/tv/search_term/%s/1' % urllib.quote_plus(title.encode("utf8"))
         episode = ''
         img_url = 'http://image.tmdb.org/t/p/w500%s' % item['poster_path']
         fanart_url = 'http://image.tmdb.org/t/p/w1000%s' % item['backdrop_path']
         genres = ','.join([get_genre_name(i) for i in item['genre_ids']])
-        meta_url = 'plugin://plugin.video.meta/movies/play/tmdb/%s/select' % item['id']
+        
         episode_id = ''
         imdbID = ''
         id = item['id']
@@ -937,7 +939,7 @@ def list_videos(imdb_url):
     content = ''
     info_type = ''
     trakt_type = ''
-    if title_type == "tv_series" or title_type == "mini_series": 
+    if title_type == "tv_series" or title_type == "mini_series" or title_type == "tv": 
         trakt_type = 'shows'
         info_type = 'extendedtvinfo'
         content = 'tvshows'
