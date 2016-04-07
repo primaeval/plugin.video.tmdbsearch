@@ -1,2 +1,6 @@
+Version 0.0.2
+- meta add tv to library
+- couch
+
 Version 0.0.1
 - first release

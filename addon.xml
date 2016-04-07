@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.tmdbsearch"
-version="0.0.1"
-name="Advanced TMDb Search"
+version="0.0.2"
+name="Advanced TMDb Discover Search"
 provider-name="primaeval">
 <requires>
   <import addon="xbmc.python" version="2.20.0"/>
@@ -13,8 +13,8 @@ provider-name="primaeval">
   <provides>video</provides>
 </extension>
 <extension point="xbmc.addon.metadata">
-  <summary lang="en">Advanced TMDb Search</summary>
-  <description lang="en">Powerful front end to the TMDb Discover search. Playback is handed off to the Meta4Kodi addon. Built-in context menu for calling the Extended Info addon. Trakt watchlist integration.</description>
+  <summary lang="en">Advanced TMDb Discover Search</summary>
+  <description lang="en">Powerful front end to the TMDb Discover search. Playback and library integration is handed off to the all powerful Meta4Kodi addon. Built-in context menu for calling the Extended Info addon. Trakt watchlist integration.</description>
   <disclaimer lang="en"></disclaimer>
 </extension>
 </addon>
