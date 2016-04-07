@@ -26,8 +26,6 @@ class Discover(TMDB):
     }
 
     def movie(self, **kwargs):
-        import xbmc
-        xbmc.log(repr(kwargs))
         """
         Discover movies by different types of data like average rating, 
         number of votes, genres and certifications.
