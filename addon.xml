@@ -14,7 +14,7 @@ provider-name="primaeval">
 </extension>
 <extension point="xbmc.addon.metadata">
   <summary lang="en">Advanced TMDb Search</summary>
-  <description lang="en">Powerful front end to the TMDb discover search. Playback is handed off to the Meta4Kodi addon. Built-in context menu for calling the Extended Info addon. Trakt watchlist integration.</description>
+  <description lang="en">Powerful front end to the TMDb Discover search. Playback is handed off to the Meta4Kodi addon. Built-in context menu for calling the Extended Info addon. Trakt watchlist integration.</description>
   <disclaimer lang="en"></disclaimer>
 </extension>
 </addon>
