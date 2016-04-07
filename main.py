@@ -842,7 +842,29 @@ def get_videos(url):
         'sort':sort,'cast':cast,'runtime':runtime,'votes':votes, 'certificate':certificate})
             
     return (videos,next_url)
+
     
+def find_tvdb_id(name):
+    dialog = xbmcgui.Dialog()
+    tvdb_url = "http://thetvdb.com//api/GetSeries.php?seriesname=%s" % name
+    r = requests.get(tvdb_url)
+    tvdb_html = r.text
+    tvdb_id = ''
+    tvdb_match = re.compile(r'<seriesid>(.*?)</seriesid>.*?<SeriesName>(.*?)</SeriesName>', flags=(re.DOTALL | re.MULTILINE)).findall(tvdb_html)
+    series = []
+    for (id,name) in tvdb_match:
+        series.append([name,id])
+    names = [i[0] for i in series]
+    if series:
+        index = dialog.select('Pick series',names)
+        if index != -1:
+            id = series[index][1]
+            return id
+        else:
+            dialog.notification('TMDb:','Cancelled!')
+    else:
+        dialog.notification('TMDb:','Nothing Found!')
+    return None
     
 def get_tvdb_id(imdb_id):
     tvdb_url = "http://thetvdb.com//api/GetSeriesByRemoteID.php?imdbid=%s" % imdb_id
@@ -988,7 +1010,9 @@ def list_videos(imdb_url):
                 (trakt_type, video['code'], urllib.quote_plus(vlabel.encode("utf8")))))
         if type == 'movies': #TODO tv needs a tvdb id not tmdb:
             run_str = "plugin://plugin.video.tmdbsearch/?action=library&type=%s&imdb_id=%s" % (type,video['code'])
-            context_items.append(('Add To Meta Library', "XBMC.RunPlugin(%s)" % run_str ))
+        else:
+            run_str = "plugin://plugin.video.tmdbsearch/?action=library&type=%s&name=%s" % (type,video['name'])
+        context_items.append(('Add To Meta Library', "XBMC.RunPlugin(%s)" % run_str ))
         context_items.append(('Meta Settings', "XBMC.RunPlugin(plugin://plugin.video.tmdbsearch/?action=meta_settings)"))
         if False: #TODO need to find a tmdb to imdb id conversion 
             try:
@@ -1163,13 +1187,16 @@ def router(paramstring):
         elif params['action'] == 'library':
             if 'type' in params.keys():
                 type = params['type']
-            if 'imdb_id' in params.keys():
-                imdb_id = params['imdb_id']
             if type == 'tv':
-                id = get_tvdb_id(imdb_id)
-                xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/%s/add_to_library/%s)" % (type,id))
+                if 'name' in params.keys():
+                    name = params['name']
+                    id = find_tvdb_id(name)
+                    if id:
+                        xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/%s/add_to_library/%s)" % (type,id))
             else:
-                xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/%s/add_to_library/tmdb/%s)" % (type,imdb_id))
+                if 'imdb_id' in params.keys():
+                    imdb_id = params['imdb_id']
+                    xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/%s/add_to_library/tmdb/%s)" % (type,imdb_id))
         elif params['action'] == 'categories':
             name = ''
             if 'name' in params.keys():
